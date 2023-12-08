@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-akhd <mel-akhd@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ahraich <ahraich@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 16:48:41 by mel-akhd          #+#    #+#             */
-/*   Updated: 2023/11/17 19:15:55 by mel-akhd         ###   ########.fr       */
+/*   Updated: 2023/12/08 11:08:28 by ahraich          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,11 @@
 
 char	*get_value_from_env(const char *name, t_env *env)
 {
+	if(!name)
+		return ("");
 	while (env)
 	{
-		if (ft_strncmp(env->name, name, INT_MAX) == 0)
+		if (ft_strncmp(env->name, name, PATH_MAX) == 0)
 			return (env->value);
 		env = env->next;
 	}
@@ -25,8 +27,8 @@ char	*get_value_from_env(const char *name, t_env *env)
 
 char	*expand_variable(char **word, t_env *env )
 {
-	char	*variable_start;
 	int		variable_length;
+	char	*variable_start;
 	char	*variable_name;
 	char	*variable_value;
 

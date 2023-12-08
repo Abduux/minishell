@@ -53,7 +53,7 @@ typedef struct s_data
 } t_data;
 
 
-
+int	arg_count(char **args);
 int	cd(t_input cmd, t_data *data);
 t_env *get_env_list(char **env);
 t_input *parser(char *input, t_data *data);

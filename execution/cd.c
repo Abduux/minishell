@@ -6,61 +6,48 @@
 /*   By: ahraich <ahraich@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 12:31:43 by ahraich           #+#    #+#             */
-/*   Updated: 2023/12/07 22:31:39 by ahraich          ###   ########.fr       */
+/*   Updated: 2023/12/08 11:09:02 by ahraich          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-#include <limits.h>
-#include <linux/limits.h>
-	
-	//step1 : save the current working directory 
-	//step2 : check if the given directory is available
-	//step3 : check if the use have permission to navigate to the directory
-	//step4 : navigate to the path
-	//step5 : update the current working directory 
-	//step6 : update the old directory path
-	
-int	arg_count(char **args)
-{
-	char	**tmp;
-	int		i;
 
-	tmp = args;
-	i = 0;
-	while (*tmp)
+int	change_dir(const char* name, t_data *data)
+{
+	if (access(name , F_OK) != 0)
+		printf("minishell: cd: %s: No such file or directory\n", name);
+	else if (access(name, X_OK) != 0)
+		printf("minishell: cd: %s: Permission denied\n", name);
+	else
 	{
-		i++;
-		tmp++;
+	chdir(name);
+		
 	}
-	return(i);
+
+	//update env variables
+	//update export variables 
 }
+
 
 int	cd(t_input cmd, t_data *data)
 {
-	char	cwdir[PATH_MAX];
-	(void)data;
-	
-	getcwd(cwdir, PATH_MAX);
-	if(!cmd.args[1])
+	char	*newdir;
+
+	if (arg_count(cmd.args) == 1)
 	{
-		printf("No Arguments Given Should Go To home !\n");
-		chdir("/home/ali");
-		// get the home directory path
-		// Navigate to the home path
-		//update the environmont variables!
+		newdir =  get_value_from_env("HOME" , data->env_list); // get the home value to navigate to it 
+		if(!newdir)
+			printf("minishell: cd: HOME not set\n"); // if the HOME variable not set
+		else
+			change_dir(newdir, data); // if it set
 	}
 	else if (arg_count(cmd.args) > 2)
 		printf("minishell: cd: too many arguments\n");
 	else if (access(cmd.args[1], F_OK) == 0)
 	{
-		if(access(cmd.args[1], X_OK) == -1)
-		{
-			printf("minishell: cd: %s: Permission denied\n", cmd.args[1]);
-			return (1);
-		}
-		printf("Go to the path given \n");	
-		chdir(cmd.args[1]);
+		if (access(cmd.args[1], X_OK) == -1)
+			return (printf("minishell: cd: %s: Permission denied\n", cmd.args[1]));
+		change_dir(cmd.args[1], data);
 	}
 	else
 		printf("minishell: cd: %s: No such file or directory\n", cmd.args[1]);

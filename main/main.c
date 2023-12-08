@@ -6,7 +6,7 @@
 /*   By: ahraich <ahraich@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 18:16:40 by mel-akhd          #+#    #+#             */
-/*   Updated: 2023/12/07 12:12:02 by ahraich          ###   ########.fr       */
+/*   Updated: 2023/12/08 10:45:44 by ahraich          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	minishell(t_data *data)
 		if (ft_strncmp(input, "exit", INT_MAX) == 0)
 			exit(0);
 		input_list = parser(input, data);
-		execution (input_list, NULL);
+		execution (input_list, data);
 		add_history(input);
 		free(input);
 		parse_free(input_list);
