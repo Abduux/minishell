@@ -6,7 +6,7 @@
 /*   By: ahraich <ahraich@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 16:48:41 by mel-akhd          #+#    #+#             */
-/*   Updated: 2023/12/08 11:08:28 by ahraich          ###   ########.fr       */
+/*   Updated: 2023/12/08 11:14:26 by ahraich          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,14 @@
 char	*get_value_from_env(const char *name, t_env *env)
 {
 	if(!name)
-		return ("");
+		return (NULL);
 	while (env)
 	{
 		if (ft_strncmp(env->name, name, PATH_MAX) == 0)
 			return (env->value);
 		env = env->next;
 	}
-	return ("");
+	return (NULL);
 }
 
 char	*expand_variable(char **word, t_env *env )

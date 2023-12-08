@@ -6,7 +6,7 @@
 /*   By: ahraich <ahraich@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 18:16:40 by mel-akhd          #+#    #+#             */
-/*   Updated: 2023/12/08 10:45:44 by ahraich          ###   ########.fr       */
+/*   Updated: 2023/12/08 11:21:53 by ahraich          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,10 @@ void	minishell(t_data *data)
 {
 	char	*input;
 	t_input	*input_list;
+	char	cwdir[PATH_MAX];
 
+	getcwd(cwdir , PATH_MAX);
+	printf("%s :",cwdir);
 	input = readline(ANSI_COLOR_RED"minishell-$ "ANSI_COLOR_RESET);
 	while (input != NULL)
 	{
@@ -28,6 +31,8 @@ void	minishell(t_data *data)
 		add_history(input);
 		free(input);
 		parse_free(input_list);
+		getcwd(cwdir , PATH_MAX);
+		printf("%s :",cwdir);
 		input = readline(ANSI_COLOR_RED"minishell-$ "ANSI_COLOR_RESET);
 	}
 }

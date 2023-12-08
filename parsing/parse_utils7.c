@@ -15,8 +15,8 @@ int    add_env(t_env **head, const char *name, const char *value)
     t_env *new_env;
     t_env *last;
 
-     new_env = (t_env *)malloc(sizeof(t_env));
-     last = *head;
+    new_env = (t_env *)malloc(sizeof(t_env));
+    last = *head;
     if (!new_env) 
     {
         printf("Memory allocation failed\n");

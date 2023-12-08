@@ -6,26 +6,38 @@
 /*   By: ahraich <ahraich@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 12:31:43 by ahraich           #+#    #+#             */
-/*   Updated: 2023/12/08 11:09:02 by ahraich          ###   ########.fr       */
+/*   Updated: 2023/12/08 14:02:46 by ahraich          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	change_dir(const char* name, t_data *data)
+int	change_dir(const char* path_name, t_data *data)
 {
-	if (access(name , F_OK) != 0)
-		printf("minishell: cd: %s: No such file or directory\n", name);
-	else if (access(name, X_OK) != 0)
-		printf("minishell: cd: %s: Permission denied\n", name);
+	char	olddir[PATH_MAX];
+
+	getcwd(olddir, PATH_MAX);
+	if (access(path_name , F_OK) != 0)
+		printf("minishell: cd: %s: No such file or directory\n", path_name);
+	else if (access(path_name, X_OK) != 0)
+		printf("minishell: cd: %s: Permission denied\n", path_name);
 	else
 	{
-	chdir(name);
+		if(chdir(path_name) != 0)
+		{
+			printf("Could not change to the  given path ! \n");
+			return (0);
+		}
+		//print_env_list(data->env_list);
+		//printf("key = %s \nValue = %s\n", data->export_list->name , data->export_list->value);
 		
+		add_env(&data->env_list, "OLDPWD", olddir);
+		
+		//print_env_list(data->export_list);
+		//update_env_variables(data);
+		//update_export_variables(data);
 	}
-
-	//update env variables
-	//update export variables 
+	return (1);
 }
 
 
@@ -43,13 +55,7 @@ int	cd(t_input cmd, t_data *data)
 	}
 	else if (arg_count(cmd.args) > 2)
 		printf("minishell: cd: too many arguments\n");
-	else if (access(cmd.args[1], F_OK) == 0)
-	{
-		if (access(cmd.args[1], X_OK) == -1)
-			return (printf("minishell: cd: %s: Permission denied\n", cmd.args[1]));
-		change_dir(cmd.args[1], data);
-	}
 	else
-		printf("minishell: cd: %s: No such file or directory\n", cmd.args[1]);
+		change_dir(cmd.args[1], data);
 	return (1);
 }

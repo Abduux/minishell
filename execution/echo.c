@@ -29,6 +29,7 @@ int    n_option(char *arg)
     return (1);
 }
 
+
 int	echo_(char **args)
 {
 	int	new_line;
@@ -39,7 +40,7 @@ int	echo_(char **args)
     while (n_option(args[i]))
     {
         new_line = 0;
-		i++;
+        i++;
     }
     while (args[i])
     {

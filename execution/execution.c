@@ -2,14 +2,16 @@
 
 int is_builtin(t_input *input_list, t_data *data)
 {
-    if(!input_list->args || !(*input_list->args))
+    if (!input_list->args || !(*input_list->args))
         return (0);
-    if(ft_strncmp(*input_list->args , "echo", CMD_LEN) == 0)
+    if (ft_strncmp(*input_list->args , "echo", CMD_LEN) == 0)
         return (echo_(input_list->args));
-    else if(ft_strncmp(*input_list->args , "cd", CMD_LEN) == 0)
+    else if (ft_strncmp(*input_list->args , "cd", CMD_LEN) == 0)
         return (cd(*input_list, data));
-    else if(ft_strncmp(*input_list->args , "pwd", CMD_LEN) == 0)
+    else if (ft_strncmp(*input_list->args , "pwd", CMD_LEN) == 0)
         return (pwd());
+    else if (ft_strncmp(*input_list->args, "env", CMD_LEN) == 0)
+        print_env_list(data->env_list);
     return (0);
 }
 
